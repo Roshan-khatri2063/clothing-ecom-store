@@ -22,6 +22,7 @@ const Topbar = () => {
                 <div className="text-sm text-center">
                     <span>we ship worldwide- fast and reliable shopping!</span>
                 </div>
+                
             </div>
         </div>
         
