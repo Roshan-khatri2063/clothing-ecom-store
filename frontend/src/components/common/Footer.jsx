@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { TbBrandMeta } from "react-icons/tb"
+
 const Footer = () => {
     return <footer className="border-t py-12">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4 lg:px-0">
@@ -22,10 +25,77 @@ const Footer = () => {
                     <button type="submit" className="bg-black text-white px-6 py-3 text-sm rounded-r-md hover:bg-gray-800 transition-all">
                         Subscribe
                     </button>
-
-                </form>
-
+                </form>    
             </div>
+
+            {/* shop links */}           
+            <div>
+                <h3 className="text-lg text-gray-800 mb-4">Shop</h3>
+                <ul className="space-y-2 text-gray-600">
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            Women's Top Outfits 
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            Men's Top Outfits 
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            Women's Bottom Outfits 
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            Men's Top Outfits 
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+
+            {/* Support Links */}
+            <div>
+                <h3 className="text-lg text-gray-800 mb-4">Supports</h3>
+                <ul className="space-y-2 text-gray-600">
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            Contact Us 
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            About Us 
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            FAQs 
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="#" className="hover:text-gray-500 transition-colors">
+                            Features 
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+
+            {/* Follow US */}
+            <div>
+                <h3 className="text-lg text-gray-800 mb-4"> Follow us </h3>
+                <div className="flex items-center space-x-4 mb-6">
+                    <a 
+                    href="http://www.facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gray-300">
+                        <TbBrandMeta />
+                    </a>
+                </div>
+            </div>
+
         </div>
     </footer>
 };
