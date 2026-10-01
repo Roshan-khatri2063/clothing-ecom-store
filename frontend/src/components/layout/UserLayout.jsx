@@ -6,7 +6,7 @@ const UserLayout = () => {
     <>
     { /* Header */}
     < Header/>
-    
+
     <Footer />
     </>
     );
