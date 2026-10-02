@@ -1,18 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserLayout from "./components/layout/UserLayout";
+import Home from "./pages/Home";
 const App = () => {
   return (
     <BrowserRouter>
-    <Routes>
+      <Routes>
+        <Route path="/" element={<UserLayout />}>
+          <Route index element={<Home />} /> 
+        </Route>
 
-      <Route path="/" element = { <UserLayout />}
-       >{/*user layout*/ }
-       </Route>
-
-      <Route> 
-        { /*Admin routes*/} 
-      </Route>
-    </Routes>
+        <Route>{/*Admin routes*/} </Route>
+      </Routes>
     </BrowserRouter>
   );
 };
