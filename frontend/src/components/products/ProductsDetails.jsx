@@ -6,7 +6,7 @@ const selectedProduct = {
   description: "New Modern look jackets for you",
   brand: "Berserk",
   Materials: "leather",
-  size: ["s", "x", "xl", "l"],
+  sizes: ["s", "x", "xl", "l"],
   colors: ["Black", "Red"],
   images: [
     {
@@ -90,6 +90,18 @@ const ProductsDetails = () => {
                 ))}
               </div>
             </div>
+
+            <div className="mb-4 ">
+                <p className="text-gray-700"> Size: </p>
+                <div className="flex gap-2 mt-2">
+                    {selectedProduct.sizes.map((size) =>(
+                        <button key={size} className="px-4 py-2 rounded border">
+                            {size}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
           </div>
         </div>
       </div>
