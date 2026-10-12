@@ -4,7 +4,7 @@ const selectedProduct = {
   originalPrice: 130,
   description: "New Modern look jackets for you",
   brand: "Berserk",
-  Materials: "leather",
+  Material: "leather",
   sizes: ["s", "x", "xl", "l"],
   colors: ["Black", "Red"],
   images: [
@@ -111,6 +111,26 @@ const ProductsDetails = () => {
                   +
                 </button>
               </div>
+            </div>
+
+            <button className="bg-black tect-white py-2 px-6 rounded w-full mb-4">
+              Add to cart
+            </button>
+
+            <div className="mt-10 text-gray-700">
+              <h3 className="text-xl font-bold mb-4">Characteristics:</h3>
+              <table className="w-full text-left text-sm text-gray-600">
+                <tbody>
+                  <tr>
+                    <td className="py-1">Brand</td>
+                    <td className="py-1">{selectedProduct.brand}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1">Material</td>
+                    <td className="py-1">{selectedProduct.Material}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
