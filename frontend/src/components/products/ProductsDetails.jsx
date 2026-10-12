@@ -1,4 +1,3 @@
-
 const selectedProduct = {
   name: "Stylish jacket",
   price: 120,
@@ -92,16 +91,27 @@ const ProductsDetails = () => {
             </div>
 
             <div className="mb-4 ">
-                <p className="text-gray-700"> Size: </p>
-                <div className="flex gap-2 mt-2">
-                    {selectedProduct.sizes.map((size) =>(
-                        <button key={size} className="px-4 py-2 rounded border">
-                            {size}
-                        </button>
-                    ))}
-                </div>
+              <p className="text-gray-700"> Size: </p>
+              <div className="flex gap-2 mt-2">
+                {selectedProduct.sizes.map((size) => (
+                  <button key={size} className="px-4 py-2 rounded border">
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-
+            <div className="mb-6">
+              <p className="text-gray-700">Quantity</p>
+              <div className="flex item-center space-x-4 mt-2">
+                <button className="px-2 py-1 bg-gray-200 rounded text-lg">
+                  -
+                </button>
+                <span className="text-lg">1</span>
+                <button className="px-2 py-1 bg-gray-200 rounded text-lg">
+                  +
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
