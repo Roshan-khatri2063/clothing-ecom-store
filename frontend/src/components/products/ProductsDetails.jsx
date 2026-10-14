@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const selectedProduct = {
   name: "Stylish jacket",
   price: 120,
@@ -20,6 +22,17 @@ const selectedProduct = {
 };
 
 const ProductsDetails = () => {
+  const [mainImage, setMainImage] = useState("");
+  const [selctedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [quentity, setQuentity] = useState(1);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    if (selectedProduct?.images?.length > 0) {
+      setMainImage(selectedProduct.images[0].url);
+    }
+  }, [selectedProduct]);
   return (
     <div className="p-6">
       <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg">
@@ -31,7 +44,10 @@ const ProductsDetails = () => {
                 key={index}
                 src={image.url}
                 alt={image.altText || `Thumbnail ${index}`}
-                className="w-20 h-20 object-cover rounded-lg cursor-pointer border"
+                className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${
+                  mainImage === image.url ? "border-black " : "border-gray-300"
+                }`}
+                onClick={() => setMainImage(image.url)}
               />
             ))}
           </div>
@@ -40,21 +56,24 @@ const ProductsDetails = () => {
           <div className="md:w-1/2">
             <div className="mb-4">
               <img
-                src={selectedProduct.images[0]?.url}
+                src={mainImage}
                 alt="Main Product"
                 className="w-full h-auto object-cover rounded-lg"
               />
             </div>
           </div>
 
-          {/* Mobile Thumbnail */}
+          {/* Mobile  Thumbnail */}
           <div className="md:hidden flex overscroll-x-scroll space-x-4 mb-4">
             {selectedProduct.images.map((image, index) => (
               <img
                 key={index}
                 src={image.url}
                 alt={image.altText || `Thumbnail ${index}`}
-                className="w-20 h-20 object-cover rounded-lg cursor-pointer border"
+                className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${
+                  mainImage === image.url ? "border-black " : "border-gray-300"
+                }`}
+                onClick={() => setMainImage(image.url)}
               />
             ))}
           </div>
@@ -80,7 +99,12 @@ const ProductsDetails = () => {
                 {selectedProduct.colors.map((color) => (
                   <button
                     key={color}
-                    className="w-8 h-8 rounded-full border"
+                    onClick={() => setSelectedColor(color)}
+                    className={`w-8 h-8 rounded-full border ${
+                      selectedColor === color
+                        ? "border-4 border-black"
+                        : "border-gray-300"
+                    }`}
                     style={{
                       backgroundColor: color.toLocaleLowerCase(),
                       filter: "brightness(0.5)",
@@ -94,7 +118,9 @@ const ProductsDetails = () => {
               <p className="text-gray-700"> Size: </p>
               <div className="flex gap-2 mt-2">
                 {selectedProduct.sizes.map((size) => (
-                  <button key={size} className="px-4 py-2 rounded border">
+                  <button key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`px-4 py-2 rounded border ${selctedSize === size ? "bg-black text-white" : ""}`}>
                     {size}
                   </button>
                 ))}
@@ -113,7 +139,7 @@ const ProductsDetails = () => {
               </div>
             </div>
 
-            <button className="bg-black tect-white py-2 px-6 rounded w-full mb-4">
+            <button className="bg-black text-white py-2 px-6 rounded w-full mb-4">
               Add to cart
             </button>
 
