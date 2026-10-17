@@ -1,15 +1,15 @@
-import { useEffect, useState, useRef } from "react";
-import { FiChevronLeft } from "react-icons/fi";
-import { FiChevronRight } from "react-icons/fi";
+import { useEffect, useRef, useState } from "react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const NewArrivals = () => {
   const scrollRef = useRef(null);
+  const dragMoved = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(false);
+  const [scrollLeft, setScrollLeft] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRIght, setCanScrollRight] = useState(true);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const newArrivals = [
     {
@@ -93,118 +93,94 @@ const NewArrivals = () => {
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
+    dragMoved.current = false;
     setStartX(e.pageX - scrollRef.current.offsetLeft);
     setScrollLeft(scrollRef.current.scrollLeft);
   };
 
-  const handleMouseMove =(e) => {
+  const handleMouseMove = (e) => {
     if (!isDragging) return;
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = x - startX;
+    const walk = e.pageX - scrollRef.current.offsetLeft - startX;
+    if (Math.abs(walk) > 5) dragMoved.current = true;
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const handleMouseUpOrLeave = () => {
-    setIsDragging(false);
+  const handleMouseUpOrLeave = () => setIsDragging(false);
+
+  // Stop a drag from being treated as a click on a product link
+  const handleClickCapture = (e) => {
+    if (dragMoved.current) e.preventDefault();
   };
 
   const scroll = (direction) => {
-    const scrollAmount = direction === "left" ? -300 : 300;
-    scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    const amount = scrollRef.current.clientWidth * 0.8;
+    scrollRef.current.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
   };
 
-  // update scroll button
   const updateScrollButtons = () => {
-    const container = scrollRef.current;
-
-    if (container) {
-      const leftScroll = container.scrollLeft;
-      const rightScrollable =
-        container.scrollWidth > leftScroll + container.clientWidth;
-
-      setCanScrollLeft(leftScroll > 0);
-      setCanScrollRight(rightScrollable);
-    }
-
-    console.log({
-      scrollLeft: container.scrollLeft,
-      clientWidth: container.clientWidth,
-      containerScrollWidth: container.scrollWidth,
-      offsetLeft: scrollRef.current.offsetLeft
-    });
+    const c = scrollRef.current;
+    if (!c) return;
+    setCanScrollLeft(c.scrollLeft > 0);
+    setCanScrollRight(c.scrollWidth > c.scrollLeft + c.clientWidth + 1);
   };
+
   useEffect(() => {
-    const container = scrollRef.current;
-    if (container) {
-      container.addEventListener("scroll", updateScrollButtons);
-      updateScrollButtons();
-      return () => container.removeEventListener("scroll", updateScrollButtons);
-    }
+    const c = scrollRef.current;
+    if (!c) return;
+    c.addEventListener("scroll", updateScrollButtons);
+    window.addEventListener("resize", updateScrollButtons);
+    updateScrollButtons();
+    return () => {
+      c.removeEventListener("scroll", updateScrollButtons);
+      window.removeEventListener("resize", updateScrollButtons);
+    };
   }, []);
 
+  const arrowCls = (enabled) =>
+    `flex h-11 w-11 items-center justify-center rounded-full border transition ${
+      enabled ? "border-ink/20 bg-white hover:border-ink hover:bg-ink hover:text-white" : "cursor-not-allowed border-ink/10 text-ink/25"
+    }`;
+
   return (
-    <section className="py-16 px-4 lg:px:0">
-      <div className="container mx-auto text-center mb-10 relative">
-        <h2 className="text-3xl font-bold mb-4 ">Explore New Arrivals</h2>
-        <p className="text-lg text-gray-600 mb-8">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore
-          doloribus nihil quaerat vitae. Laboriosam tempora est earum animi
-          rerum libero!
-        </p>
-
-        {/* scroll buttom */}
-        <div className="absolute right-0 bottom-[-30px] flex space-x-2">
-          <button
-            onClick={() => scroll("left")}
-            disabled={!canScrollLeft}
-            className={`p-2 rounded border ${
-              canScrollLeft
-                ? "bg-white text-black"
-                : "bg-gray-200 text-gray-400 cursor-not-allowed"
-            }`}
-          >
-            <FiChevronLeft className="text-2xl" />
-          </button>
-          <button onClick={() => scroll("right")} className={`p-2 rounded border ${
-              canScrollRIght
-                ? "bg-white text-black"
-                : "bg-gray-200 text-gray-400 cursor-not-allowed"
-            }`}>
-            <FiChevronRight className="text-2xl" />
-          </button>
-        </div>
-      </div>
-
-      {/* Scrollable content */}
-      <div
-        ref={scrollRef}
-        className={`container mx-auto overflow-x-scroll flex space-x-6 relative ${
-          isDragging ? "cursor-grabbing" : "cursor-grab"}`}
-        onMouseDown={handleMouseDown}
-        onMouseMove={ handleMouseMove }
-        onMouseUp={ handleMouseUpOrLeave }
-        onMouseLeave={ handleMouseUpOrLeave }
-        
-      >
-        {newArrivals.map((product) => (
-          <div
-            key={product._id}
-            className="min-w-[100%] sm:min-w-[50%] lg:min-w-[30%] relative"
-          >
-            <img
-              src={product.image[0]?.url}
-              alt={product.image[0]?.altText || product.name}
-              className="w-full h-[500px] object-cover rounded-lg"
-              draggable="false"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-opacity-50 backdrop-blur-md text-white p-4 rounded-b-lg">
-              <Link to={`/product/${product._id}`} className="block">
-                <h4 className="font-medium">{product.name}</h4>
-                <p className="mt-1">${product.price}</p>
-              </Link>
-            </div>
+    <section className="px-4 py-20 lg:px-0" aria-labelledby="new-arrivals">
+      <div className="container mx-auto">
+        <div className="relative mb-10 text-center">
+          <h2 className="mb-4 text-3xl font-bold">Explore New Arrivals</h2>
+          <p className="mx-auto max-w-2xl text-gray-600">
+            Fresh pieces added this week. Drag, swipe or use the arrows to browse the latest drops.
+          </p>
+          <div className="absolute bottom-0 right-0 hidden gap-2 md:flex">
+            <button onClick={() => scroll("left")} disabled={!canScrollLeft} aria-label="Scroll left" className={arrowCls(canScrollLeft)}>
+              <FiChevronLeft className="text-xl" />
+            </button>
+            <button onClick={() => scroll("right")} disabled={!canScrollRight} aria-label="Scroll right" className={arrowCls(canScrollRight)}>
+              <FiChevronRight className="text-xl" />
+            </button>
           </div>
-        ))}
+        </div>
+
+        <div
+          ref={scrollRef}
+          className={`no-scrollbar flex gap-4 overflow-x-auto pb-2 md:gap-6 ${isDragging ? "cursor-grabbing select-none" : "cursor-grab"}`}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onMouseLeave={handleMouseUpOrLeave}
+          onClickCapture={handleClickCapture}
+        >
+          {newArrivals.map((product) => (
+            <Link key={product._id} to={`/product/${product._id}`} draggable="false"
+              className="group relative min-w-[72%] overflow-hidden rounded-2xl bg-sand sm:min-w-[45%] lg:min-w-[31%]">
+              <img src={product.image[0]?.url} alt={product.image[0]?.altText || product.name} draggable="false"
+                className="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-105" />
+              <span className="absolute left-3 top-3 rounded-full bg-accent px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">New</span>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-5 pt-14 text-white">
+                <h4 className="font-medium capitalize">{product.name}</h4>
+                <p className="mt-1 text-sm text-white/80">$ {product.price}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
