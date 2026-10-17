@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import ProductGrid from "./ProductGrid";
 
 const selectedProduct = {
   name: "Stylish jacket",
@@ -21,6 +22,33 @@ const selectedProduct = {
     },
   ],
 };
+
+const similarProducts = [
+  {
+    _id: 1,
+    name: "product 1",
+    price: 100,
+    image: [{url: "https://picsum.photos/500/500?random=2"}],
+  },
+  {
+    _id: 1,
+    name: "product 2",
+    price: 100,
+    image: [{url: "https://picsum.photos/500/500?random=3"}],
+  },
+  {
+    _id: 1,
+    name: "product 3",
+    price: 100,
+    image: [{url: "https://picsum.photos/500/500?random=5"}],
+  },
+  {
+    _id: 1,
+    name: "product 4",
+    price: 100,
+    image: [{url: "https://picsum.photos/500/500?random=6"}],
+  },
+]
 
 const ProductsDetails = () => {
   const [mainImage, setMainImage] = useState("");
@@ -200,6 +228,12 @@ const ProductsDetails = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-20">
+        <h2 className="text-2xl text-center font-medium mb-4">
+          You May Also Like
+        </h2>
+        <ProductGrid products={similarProducts} />
       </div>
     </div>
   );
