@@ -43,19 +43,6 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        {/* feature 4*/}
-        <div className="flex flex-cols items-center">
-          <div className="p-4 ronded-full mb-4">
-            <HiShoppingBag className="text-xl" />
-          </div>
-          <h4 className="tracking-tighter mb-2">
-            FREE INTERNATIONAL SHIPPING
-          </h4>
-          <p className="text-gray-600 text-sm tracking-tighter">
-            on all order over
-          </p>
-        </div>
-
 
       </div>
     </section>
