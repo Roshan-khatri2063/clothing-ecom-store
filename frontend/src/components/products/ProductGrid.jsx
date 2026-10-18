@@ -1,28 +1,34 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-const ProductGrid = ({ products }) => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {products.map((product, index) => (
-        <Link key={index} to={`product._id`} className="block">
-          <div className="bg-white p-4 rounded-lg">
-            <div className="w-full h-96 mb-4">
+// Accepts products with either `image` or `images`: [{ url, altText }]
+const ProductGrid = ({ products }) => (
+  <div className="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4 md:gap-x-6">
+    {products.map((product, index) => {
+      const img = (product.image || product.images)?.[0];
+      return (
+        <Link
+          key={product._id ?? index}
+          to={`/product/${product._id}`}
+          className="group block"
+        >
+          <div className="aspect-[3/4] overflow-hidden rounded-xl bg-sand">
+            {img && (
               <img
-                src={product.image[0].url}
-                alt={product.image[0].alText || product.name}
-                className="w-full h-full object-cover rounded-lg"
+                src={img.url}
+                alt={img.altText || product.name}
+                loading="lazy"
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
               />
-            </div>
-            <h3 className="text-sm mb-2">{product.name}</h3>
-            <p className="text-gray-500 font-medium text-sm tracking-tighter">
-                $ {product.price}
-            </p>
+            )}
           </div>
+          <h3 className="mt-3 truncate text-sm font-medium capitalize">
+            {product.name}
+          </h3>
+          <p className="mt-0.5 text-sm text-ink/60">$ {product.price}</p>
         </Link>
-      ))}
-    </div>
-  );
-};
+      );
+    })}
+  </div>
+);
 
 export default ProductGrid;

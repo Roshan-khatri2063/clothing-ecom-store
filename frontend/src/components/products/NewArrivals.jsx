@@ -114,7 +114,10 @@ const NewArrivals = () => {
 
   const scroll = (direction) => {
     const amount = scrollRef.current.clientWidth * 0.8;
-    scrollRef.current.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
+    scrollRef.current.scrollBy({
+      left: direction === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
   };
 
   const updateScrollButtons = () => {
@@ -138,7 +141,9 @@ const NewArrivals = () => {
 
   const arrowCls = (enabled) =>
     `flex h-11 w-11 items-center justify-center rounded-full border transition ${
-      enabled ? "border-ink/20 bg-white hover:border-ink hover:bg-ink hover:text-white" : "cursor-not-allowed border-ink/10 text-ink/25"
+      enabled
+        ? "border-ink/20 bg-white hover:border-ink hover:bg-ink hover:text-white"
+        : "cursor-not-allowed border-ink/10 text-ink/25"
     }`;
 
   return (
@@ -147,13 +152,24 @@ const NewArrivals = () => {
         <div className="relative mb-10 text-center">
           <h2 className="mb-4 text-3xl font-bold">Explore New Arrivals</h2>
           <p className="mx-auto max-w-2xl text-gray-600">
-            Fresh pieces added this week. Drag, swipe or use the arrows to browse the latest drops.
+            Fresh pieces added this week. Drag, swipe or use the arrows to
+            browse the latest drops.
           </p>
           <div className="absolute bottom-0 right-0 hidden gap-2 md:flex">
-            <button onClick={() => scroll("left")} disabled={!canScrollLeft} aria-label="Scroll left" className={arrowCls(canScrollLeft)}>
+            <button
+              onClick={() => scroll("left")}
+              disabled={!canScrollLeft}
+              aria-label="Scroll left"
+              className={arrowCls(canScrollLeft)}
+            >
               <FiChevronLeft className="text-xl" />
             </button>
-            <button onClick={() => scroll("right")} disabled={!canScrollRight} aria-label="Scroll right" className={arrowCls(canScrollRight)}>
+            <button
+              onClick={() => scroll("right")}
+              disabled={!canScrollRight}
+              aria-label="Scroll right"
+              className={arrowCls(canScrollRight)}
+            >
               <FiChevronRight className="text-xl" />
             </button>
           </div>
@@ -169,11 +185,21 @@ const NewArrivals = () => {
           onClickCapture={handleClickCapture}
         >
           {newArrivals.map((product) => (
-            <Link key={product._id} to={`/product/${product._id}`} draggable="false"
-              className="group relative min-w-[72%] overflow-hidden rounded-2xl bg-sand sm:min-w-[45%] lg:min-w-[31%]">
-              <img src={product.image[0]?.url} alt={product.image[0]?.altText || product.name} draggable="false"
-                className="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-105" />
-              <span className="absolute left-3 top-3 rounded-full bg-accent px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">New</span>
+            <Link
+              key={product._id}
+              to={`/product/${product._id}`}
+              draggable="false"
+              className="group relative min-w-[72%] overflow-hidden rounded-2xl bg-sand sm:min-w-[45%] lg:min-w-[31%]"
+            >
+              <img
+                src={product.image[0]?.url}
+                alt={product.image[0]?.altText || product.name}
+                draggable="false"
+                className="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+              <span className="absolute left-3 top-3 rounded-full bg-accent px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white">
+                New
+              </span>
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-5 pt-14 text-white">
                 <h4 className="font-medium capitalize">{product.name}</h4>
                 <p className="mt-1 text-sm text-white/80">$ {product.price}</p>
