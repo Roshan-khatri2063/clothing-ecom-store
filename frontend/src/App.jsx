@@ -1,21 +1,13 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UserLayout from "./components/layout/UserLayout";
-import Home from "./pages/Home";
+import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "sonner";
+import AppRoutes from "./routes/AppRoutes";
+import ScrollToTop from "./components/common/ScrollToTop";
 
-const App = () => {
-  return (
-    <BrowserRouter>
-    <Toaster position="top-right"/>
-      <Routes>
-        <Route path="/" element={<UserLayout />}>
-          <Route index element={<Home />} /> 
-          <Route path="login" element={<login />} />
-        </Route>
-
-        <Route>{/*Admin routes*/} </Route>
-      </Routes>
-    </BrowserRouter>
-  );
-};
+const App = () => (
+  <BrowserRouter>
+    <ScrollToTop />
+    <Toaster position="top-right" richColors closeButton />
+    <AppRoutes />
+  </BrowserRouter>
+);
 export default App;
