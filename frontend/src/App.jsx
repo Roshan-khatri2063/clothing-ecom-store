@@ -10,6 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} /> 
+          <Route path="login" element={<login />} />
         </Route>
 
         <Route>{/*Admin routes*/} </Route>
