@@ -2,8 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-#root {
-  font-family: "inter", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+  img {
+    @apply max-w-full;
+  }
+}
+
+@layer components {
+  .btn-dark,
+  .btn-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-semibold uppercase tracking-widest transition duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-dark {
+    @apply bg-ink text-white hover:bg-accent;
+  }
+  .btn-light {
+    @apply border border-ink/20 bg-white text-ink hover:border-ink hover:bg-ink hover:text-white;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.25em] text-accent;
+  }
+  .input-base {
+    @apply w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm placeholder:text-gray-400 focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
