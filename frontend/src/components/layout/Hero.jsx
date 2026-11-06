@@ -6,6 +6,7 @@ const Hero = () => {
     <section className="relative overflow-hidden bg-cream">
       <img
         src={hero2}
+        fetchPriority="high"
         alt="Seasonal collection of outfits and accessories"
         className="h-[520px] w-full object-cover object-right md:h-[640px] lg:h-[700px]"
       />
@@ -23,11 +24,10 @@ const Hero = () => {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="#" className="btn-dark">
-                Shop now
-              </Link>
+                <Link to="/collection" className="btn-dark">
+                  Shop now
+                </Link>
               </div>
-
             </div>
           </div>
         </div>
