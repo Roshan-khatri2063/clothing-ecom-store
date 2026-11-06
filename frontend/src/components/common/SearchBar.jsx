@@ -1,58 +1,78 @@
-import { useState } from "react";
-import{ HiMagnifyingGlass, HiMiniXMark } from "react-icons/hi2";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { HiMagnifyingGlass, HiMiniXMark } from "react-icons/hi2";
 
 const SearchBar = () => {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [ isOpen, setIsOpen ] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const inputRef = useRef(null);
+  const navigate = useNavigate();
 
-    const handleSearchToggle = () => {
-        setIsOpen(!isOpen);
-    };
+  useEffect(() => {
+    if (!isOpen) return;
+    inputRef.current?.focus();
+    const onKey = (e) => e.key === "Escape" && setIsOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen]);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        console.log("search Term:", searchTerm);
-        setIsOpen(false);
-    }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const q = searchTerm.trim();
+    if (!q) return;
+    navigate(`/search?q=${encodeURIComponent(q)}`);
+    setIsOpen(false);
+  };
 
+  if (!isOpen) {
     return (
-        <div className={`flex items-center justify-center w-full transition-all duration-300 
-        ${isOpen ? "absolute top-0 left-0 w-full bg-white h-24 z-50" : "w-auto"}`}>
-
-            {isOpen ? (
-                <form onSubmit={handleSearch} className="relative flex items-center justify-center h-full w-full">
-
-                    <div className="relative w-1/2">
-                        <input type="text" 
-                        placeholder="Search" 
-                        value = {searchTerm} 
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="bg-gray-100 px-4 py-2 pl-2 pr-12 rounded-lg focus:outline-none w-full 
-                        placeholder:text-gray-700"/>
-
-                        { /* search icon */}
-                        <button type="submit"
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600
-                        hover: text-gray-800">
-                            <HiMagnifyingGlass className="h-6 w-6" />
-                        </button>
-                    </div>
-
-                    {/* close icon*/}
-                    <button type="button"
-                    onClick = {handleSearchToggle}
-                     className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600
-                     hover:text-gray-800">
-                        <HiMiniXMark className="h-6 w-6" />
-                    </button>
-
-                </form>
-            ) : (
-                <button onClick={handleSearchToggle}>
-                <HiMagnifyingGlass className="h-6 w-6" />
-                </button>
-            )}
-        </div>
+      <button
+        onClick={() => setIsOpen(true)}
+        aria-label="Open search"
+        className="text-gray-700 hover:text-black"
+      >
+        <HiMagnifyingGlass className="h-6 w-6" />
+      </button>
     );
+  }
+
+  return (
+    <div
+      className="fixed inset-x-0 top-0 z-[60] flex h-24 items-center justify-center bg-white shadow-md"
+      role="search"
+    >
+      <form
+        onSubmit={handleSearch}
+        className="relative flex h-full w-full items-center justify-center px-4"
+      >
+        <div className="relative w-full max-w-xl">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search for outfits, jackets, jeans…"
+            aria-label="Search products"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-lg bg-gray-100 py-2.5 pl-4 pr-12 placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-ink"
+          />
+          <button
+            type="submit"
+            aria-label="Search"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800"
+          >
+            <HiMagnifyingGlass className="h-6 w-6" />
+          </button>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsOpen(false)}
+          aria-label="Close search"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800"
+        >
+          <HiMiniXMark className="h-6 w-6" />
+        </button>
+      </form>
+    </div>
+  );
 };
 export default SearchBar;
