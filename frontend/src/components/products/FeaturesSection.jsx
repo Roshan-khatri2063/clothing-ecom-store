@@ -1,52 +1,42 @@
-import { HiArrowPathRoundedSquare, HiOutlineCreditCard, HiShoppingBag } from "react-icons/hi2";
+import {
+  HiArrowPathRoundedSquare,
+  HiOutlineCreditCard,
+  HiShoppingBag,
+} from "react-icons/hi2";
 
-const FeaturesSection = () => {
-  return (
-    <section className="py-16 px-4 bg-white">
-      <div className="container mx-auto grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        {/* feature 1*/}
-        <div className="flex flex-cols items-center">
-          <div className="p-4 ronded-full mb-4">
-            <HiShoppingBag className="text-xl" />
+const features = [
+  {
+    Icon: HiShoppingBag,
+    title: "Free international shipping",
+    text: "On all orders over Rs. 5,000",
+  },
+  {
+    Icon: HiArrowPathRoundedSquare,
+    title: "30-day returns",
+    text: "100% money-back guarantee",
+  },
+  {
+    Icon: HiOutlineCreditCard,
+    title: "Secure checkout",
+    text: "100% secured checkout process",
+  },
+];
+
+const FeaturesSection = () => (
+  <section className="bg-white px-4 py-16">
+    <div className="container mx-auto grid grid-cols-1 gap-8 text-center md:grid-cols-3">
+      {features.map(({ Icon, title, text }) => (
+        <div key={title} className="flex flex-col items-center">
+          <div className="mb-4 rounded-full bg-cream p-4">
+            <Icon className="h-6 w-6 text-accent" />
           </div>
-          <h4 className="tracking-tighter mb-2">
-            FREE INTERNATIONAL SHIPPING
-          </h4>
-          <p className="text-gray-600 text-sm tracking-tighter">
-            on all order over
-          </p>
+          <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide">
+            {title}
+          </h3>
+          <p className="text-sm text-gray-600">{text}</p>
         </div>
-
-        {/* feature 2*/}
-        <div className="flex flex-cols items-center">
-          <div className="p-4 ronded-full mb-4">
-            <HiArrowPathRoundedSquare className="text-xl" />
-          </div>
-          <h4 className="tracking-tighter mb-2">
-            30 days Return
-          </h4>
-          <p className="text-gray-600 text-sm tracking-tighter">
-           100% price gurentee
-          </p>
-        </div>
-
-        {/* feature 3*/}
-        <div className="flex flex-cols items-center">
-          <div className="p-4 ronded-full mb-4">
-            <HiOutlineCreditCard className="text-xl" />
-          </div>
-          <h4 className="tracking-tighter mb-2">
-            SECURED CHECKOUT
-          </h4>
-          <p className="text-gray-600 text-sm tracking-tighter">
-            100% SECURED CHECKOUT PROCESS
-          </p>
-        </div>
-
-
-      </div>
-    </section>
-  );
-};
-
+      ))}
+    </div>
+  </section>
+);
 export default FeaturesSection;

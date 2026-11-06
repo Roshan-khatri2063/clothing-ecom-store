@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
+import { formatPrice } from "../../utils/format";
 
 // Accepts products with either `image` or `images`: [{ url, altText }]
 const ProductGrid = ({ products }) => (
-  <div className="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4 md:gap-x-6">
-    {products.map((product, index) => {
+  <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:gap-x-6 lg:grid-cols-4">
+    {products.map((product) => {
       const img = (product.image || product.images)?.[0];
       return (
         <Link
-          key={product._id ?? index}
-          to={`/product/${product._id}`}
+          key={product.id}
+          to={`/product/${product.id}`}
           className="group block"
         >
           <div className="aspect-[3/4] overflow-hidden rounded-xl bg-sand">
@@ -24,11 +25,12 @@ const ProductGrid = ({ products }) => (
           <h3 className="mt-3 truncate text-sm font-medium capitalize">
             {product.name}
           </h3>
-          <p className="mt-0.5 text-sm text-ink/60">$ {product.price}</p>
+          <p className="mt-0.5 text-sm text-ink/60">
+            {formatPrice(product.price)}
+          </p>
         </Link>
       );
     })}
   </div>
 );
-
 export default ProductGrid;

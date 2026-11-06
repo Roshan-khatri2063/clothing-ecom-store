@@ -6,13 +6,13 @@ const collections = [
   {
     title: "Women's Collection",
     img: outfit1,
-    to: "/collection/all?gender=Women",
+    to: "/collection?gender=Women",
     tag: "For her",
   },
   {
     title: "Men's Collection",
     img: outfit5,
-    to: "/collection/all?gender=Men",
+    to: "/collection?gender=Men",
     tag: "For him",
   },
 ];
@@ -36,6 +36,7 @@ const GenderCollectionSection = () => (
             <img
               src={img}
               alt={title}
+              loading="lazy"
               className="h-[480px] w-full object-cover object-top transition duration-700 group-hover:scale-105 md:h-[640px]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />

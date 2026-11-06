@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { mockProducts } from "../../utils/mockData";
+import { formatPrice } from "../../utils/format";
 
 const NewArrivals = () => {
   const scrollRef = useRef(null);
@@ -11,85 +13,8 @@ const NewArrivals = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const newArrivals = [
-    {
-      _id: "1",
-      name: "stylish jacket",
-      price: "120",
-      image: [
-        {
-          url: "https://picsum.photos/500/500?random=1",
-          altText: "stylish jacket",
-        },
-      ],
-    },
-    {
-      _id: "2",
-      name: "stylish jacket",
-      price: "120",
-      image: [
-        {
-          url: "https://picsum.photos/500/500?random=2",
-          altText: "stylish jacket",
-        },
-      ],
-    },
-    {
-      _id: "3",
-      name: "stylish jacket",
-      price: "120",
-      image: [
-        {
-          url: "https://picsum.photos/500/500?random=3",
-          altText: "stylish jacket",
-        },
-      ],
-    },
-    {
-      _id: "4",
-      name: "stylish jacket",
-      price: "120",
-      image: [
-        {
-          url: "https://picsum.photos/500/500?random=4",
-          altText: "stylish jacket",
-        },
-      ],
-    },
-    {
-      _id: "5",
-      name: "stylish jacket",
-      price: "120",
-      image: [
-        {
-          url: "https://picsum.photos/500/500?random=5",
-          altText: "stylish jacket",
-        },
-      ],
-    },
-    {
-      _id: "6",
-      name: "stylish jacket",
-      price: "120",
-      image: [
-        {
-          url: "https://picsum.photos/500/500?random=6",
-          altText: "stylish jacket",
-        },
-      ],
-    },
-    {
-      _id: "7",
-      name: "stylish jacket",
-      price: "120",
-      image: [
-        {
-          url: "https://picsum.photos/500/500?random=7",
-          altText: "stylish jacket",
-        },
-      ],
-    },
-  ];
+  // Day 1: fetch from GET /products/new-arrivals
+  const newArrivals = mockProducts;
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -150,7 +75,12 @@ const NewArrivals = () => {
     <section className="px-4 py-20 lg:px-0" aria-labelledby="new-arrivals">
       <div className="container mx-auto">
         <div className="relative mb-10 text-center">
-          <h2 className="mb-4 text-3xl font-bold">Explore New Arrivals</h2>
+          <h2
+            id="new-arrivals"
+            className="mb-4 font-display text-3xl font-semibold md:text-4xl"
+          >
+            Explore New Arrivals
+          </h2>
           <p className="mx-auto max-w-2xl text-gray-600">
             Fresh pieces added this week. Drag, swipe or use the arrows to
             browse the latest drops.
@@ -186,8 +116,8 @@ const NewArrivals = () => {
         >
           {newArrivals.map((product) => (
             <Link
-              key={product._id}
-              to={`/product/${product._id}`}
+              key={product.id}
+              to={`/product/${product.id}`}
               draggable="false"
               className="group relative min-w-[72%] overflow-hidden rounded-2xl bg-sand sm:min-w-[45%] lg:min-w-[31%]"
             >
@@ -202,7 +132,9 @@ const NewArrivals = () => {
               </span>
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-5 pt-14 text-white">
                 <h4 className="font-medium capitalize">{product.name}</h4>
-                <p className="mt-1 text-sm text-white/80">$ {product.price}</p>
+                <p className="mt-1 text-sm text-white/80">
+                  {formatPrice(product.price)}
+                </p>
               </div>
             </Link>
           ))}
