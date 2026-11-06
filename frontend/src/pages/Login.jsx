@@ -1,44 +1,83 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import AuthShell from "../components/common/AuthShell";
+import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  usePageTitle("Log in");
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
+
+  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const validate = () => {
+    const err = {};
+    if (!/^\S+@\S+\.\S+$/.test(form.email))
+      err.email = "Enter a valid email address";
+    if (form.password.length < 6)
+      err.password = "Password must be at least 6 characters";
+    return err;
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const err = validate();
+    setErrors(err);
+    if (Object.keys(err).length) return;
+    // Day 1: call POST /auth/login via AuthContext.
+    toast.info("Login API is connected on Day 1.");
+  };
 
   return (
-    <div className="flex">
-      <div className="w-full md:w-1/2 flex-col justify-center items-center p-8 md:p-12">
-        <form className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm">
-          <div className="flex justify-center mb-6">
-            <h2 className="text-xl font-medium"> Berserk </h2>
-          </div>
-          <h2 className="text-2xl font-bold text-center mb-6">Hey there! </h2>
-          <p className="text-center mb-6">
-            Enter Your Email and Password to login
-          </p>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2"> Email </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
-              placeholder="Enter Your Email Address"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border rounded"
-              placeholder="Enter Your Password"
-            />
-          </div>
-        </form>
-      </div>
-    </div>
+    <AuthShell
+      title="Welcome back"
+      subtitle="Enter your email and password to log in."
+      footer={
+        <>
+          New here?{" "}
+          <Link to="/register" className="font-semibold text-ink underline">
+            Create an account
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={onSubmit} noValidate className="space-y-4">
+        <Input
+          label="Email"
+          type="email"
+          name="email"
+          autoComplete="email"
+          value={form.email}
+          onChange={onChange}
+          error={errors.email}
+          placeholder="you@example.com"
+        />
+        <Input
+          label="Password"
+          type="password"
+          name="password"
+          autoComplete="current-password"
+          value={form.password}
+          onChange={onChange}
+          error={errors.password}
+          placeholder="Your password"
+        />
+        <div className="text-right">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-gray-600 hover:text-ink"
+          >
+            Forgot password?
+          </Link>
+        </div>
+        <Button type="submit" className="w-full">
+          Log in
+        </Button>
+      </form>
+    </AuthShell>
   );
 };
-
 export default Login;
